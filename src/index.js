@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import axios from 'axios'
 
 function Square(props) {
   return (
@@ -74,6 +75,23 @@ class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext
     });
+    
+    this.addMove(i, squares[i]);
+  }
+
+  addMove(player, position) {
+    axios
+  .post('/api/v1/moves', {
+    player: player,
+    position: position
+  })
+  .then(function(response) {
+    console.log(response);
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
   }
 
   jumpTo(step) {
@@ -92,6 +110,7 @@ class Game extends React.Component {
       const desc = move ?
         'Go to move #' + move :
         'Go to game start';
+        console.log(move);
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
